@@ -1,0 +1,38 @@
+#pelaaja {
+    text-align: center;
+}
+.elaimet{
+    left: 0;
+    background-color: wheat;
+    width: 30%;
+}
+
+.container {
+    display: flex; /* Käytetään Flexboxia */
+    justify-content: space-between; /* Asettaa tilan elementtien väliin */
+}
+
+.elainrivi {
+    width: 100%;
+    display: flex;
+    margin-bottom: 2%;
+}
+
+h1::before {
+    content: 'x';
+    margin-right: 10px;
+}
+
+.kuvake{
+    margin-top: 10px;   
+    margin-left: 20px;
+    width: 40%;
+    max-width: 100px;
+    aspect-ratio: 1/1;
+}
+
+h1 {
+    display: inline-flex;
+    margin: auto 10px;
+    font-size: 40px;
+}

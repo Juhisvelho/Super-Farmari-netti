@@ -5,43 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Farmari</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 <body>
-    <h2 id="pelaaja">Pelaaja</h2>
+    <h2 id="pelaaja">Pelaajan <span id="pelaajaNimi"></span> vuoro</h2>
     <div class="container">
         <div class="elaimet">
             <div class="elainrivi" id="puput">
                 <img class="kuvake" src="images/Pupu.png" alt="pupu" draggable="false">
-                <h1 id="pupuLKM">2</h1>
+                <h1 class="ennen" id="pupuLKM"></h1>
             </div>
             <div class="elainrivi" id="lampaat">
                 <img class="kuvake" src="images/Lammas.png" alt="lammas" draggable="false">
-                <h1 id="lammasLKM">1</h1>
+                <h1 class="ennen" id="lammasLKM"></h1>
             </div>
             <div class="elainrivi" id="possut">
                 <img class="kuvake" src="images/Possu.png" alt="possu" draggable="false">
-                <h1 id="possuLKM">3</h1>
+                <h1 class="ennen" id="possuLKM"></h1>
             </div>
             <div class="elainrivi" id="lehmat">
                 <img class="kuvake" src="images/Lehma.png" alt="lehmä" draggable="false">
-                <h1 id="lehmaLKM">2</h1>
+                <h1 class="ennen" id="lehmaLKM"></h1>
             </div>
             <div class="elainrivi" id="hevoset">
                 <img class="kuvake" src="images/Hevonen.png" alt="hevonen" draggable="false">
-                <h1 id="hevonenLKM">3</h1>
+                <h1 class="ennen" id="hevonenLKM"></h1>
             </div>
         </div>
     
-        <div class="vaihtokaupat">
-            <!-- Tähän kuva mahdollisista vaihtokaupoista --> 
-            
+    </div>
+    <main>
+    <div class="koirat">
+        <div class="elainrivi" id="pienet">
+            <h1 class="jalkeen" id="pieniLKM"></h1>
+            <img class="kuvake" src="images/koira_pieni.png" alt="pieni koira" draggable="false">
         </div>
+        <div class="elainrivi" id="isot">
+            <h1 class="jalkeen" id="isoLKM"></h1>
+            <img class="kuvake" src="images/koira_iso.png" alt="iso koira" draggable="false">
+        </div>
+    </div>
     
     </div>
     
-    <button id="heitanappi">Heitä</button>
-    <button id="vaihdanappi">Vaihda</button>
+    </main>
 
+    <div class="noppaContainer">
+        <h3 id="oranssiNoppa"></h3>
+        <h3 id="sininenNoppa"></h3>
+    </div>
+
+    <div class="nappirivi">
+        <button id="heitanappi">Heitä</button>
+        <button id="vaihdanappi" disabled>Vaihda</button>
+        <button id="seuraavanappi" disabled>Seuraava vuoro</button>
+    </div>
+
+    <div id="vaihtokauppaContainer">
+        <div class="elainrivi no-margin">
+            <img id="pupuVaihdettava" class="kuvake pieni no-margin vaihtokuvake" src="images/Pupu.png" alt="pupu" draggable="false">
+            <h1 class="hinta" id="pupuTrade">↔ x 6</h1>
+            <img id="lammasTuote" class="kuvake pieni no-margin vaihtokuvake" src="images/Lammas.png" alt="lammas" draggable="false">
+        </div>
+        <div class="elainrivi no-margin">
+            <img id="lammasVaihdettava" class="kuvake pieni no-margin vaihtokuvake" src="images/Lammas.png" alt="lammas" draggable="false">
+            <h1 class="hinta" id="pupuTrade">↔ x 2</h1>
+            <img id="possuTuote" class="kuvake pieni no-margin vaihtokuvake" src="images/Possu.png" alt="possu" draggable="false">
+        </div>
+        <div class="elainrivi no-margin">
+            <img id="possuVaihdettava" class="kuvake pieni no-margin vaihtokuvake" src="images/Possu.png" alt="possu" draggable="false">
+            <h1 class="hinta" id="pupuTrade">↔ x 3</h1>
+            <img id="lehmaTuote" class="kuvake pieni no-margin vaihtokuvake" src="images/Lehma.png" alt="lehmä" draggable="false">
+        </div>
+        <div class="elainrivi no-margin">
+            <img id="lehmaVaihdettava" class="kuvake pieni no-margin vaihtokuvake" src="images/Lehma.png" alt="lehmä" draggable="false">
+            <h1 class="hinta" id="pupuTrade">↔ x 2</h1>
+            <img id="hevonenTuote" class="kuvake pieni no-margin vaihtokuvake" src="images/Hevonen.png" alt="hevonen" draggable="false">
+        </div>
+        <div class="elainrivi no-margin">
+            <img id="lammasVaihdettavaK" class="kuvake pieni no-margin vaihtokuvake" src="images/Lammas.png" alt="lammas" draggable="false">
+            <h1 class="hinta" id="pupuTrade">↔ x 1</h1>
+            <img id="pieniKoira" class="kuvake pieni no-margin vaihtokuvake" src="images/koira_pieni.png" alt="pieni koira" draggable="false">
+        </div>
+        <div class="elainrivi no-margin">
+            <img id="lehmaVaihdettavaK" class="kuvake pieni no-margin vaihtokuvake" src="images/Lehma.png" alt="lehmä" draggable="false">
+            <h1 class="hinta" id="pupuTrade">↔ x 1</h1>
+            <img id="isoKoira" class="kuvake pieni no-margin vaihtokuvake" src="images/koira_iso.png" alt="iso koira" draggable="false">
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
+
+rajat = [6,2,3,2]

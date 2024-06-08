@@ -228,9 +228,9 @@ function updateVaihtokauppa() {
     }
 }
 
-updateVaihtokuvakkeet() {
-    // poistaa luokan "vaihtokuvake", joka lisää harmaan värityksen. Samalla myös lisää eventlistener ("click", trade)
-}
+// updateVaihtokuvakkeet() {
+//     // poistaa luokan "vaihtokuvake", joka lisää harmaan värityksen. Samalla myös lisää eventlistener ("click", trade)
+// }
 
 function vaihda() {
     vaihtoSivu.style.display = 'block';

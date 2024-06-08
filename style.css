@@ -1,3 +1,7 @@
+body{
+    scrollbar-width: none;
+}
+
 #pelaaja {
     text-align: center;
 }
@@ -106,10 +110,9 @@ h1.jalkeen::after {
     margin-left: 10px;
 }
 
-.kuvake{
-    margin-top: 10px;   
+.kuvake{  
     margin-left: 20px;
-    width: 40%;
+    height: 14%;
     max-width: 100px;
     aspect-ratio: 1/1;
 }

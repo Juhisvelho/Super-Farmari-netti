@@ -67,7 +67,7 @@ body{
     margin-top: 1px;
 }
 
-.vaihtokuvake {
+.disabled {
     filter: grayscale(80%);
 }
 
@@ -82,6 +82,7 @@ button {
     border-radius: 2%/30%;
     color:black;
     font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1em;
 }
 
 button:hover{

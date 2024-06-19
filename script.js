@@ -6,6 +6,7 @@ const oranssiNoppaText = document.getElementById('oranssiNoppa');
 const sininenNoppaText = document.getElementById('sininenNoppa');
 const vaihtoSivu = document.getElementById('vaihtokauppaContainer');
 const koiraContainer = document.querySelector('.koirat');
+const rajat = [6,2,3,2,1,1];
 let oranssiNoppa;   
 let sininenNoppa;
 let vuoro = 0;
@@ -37,8 +38,8 @@ const tuoteKuvaElementit = {
     possuTuote: document.getElementById('possuTuote'),
     lehmaTuote: document.getElementById('lehmaTuote'),
     hevonenTuote: document.getElementById('hevonenTuote'),
-    isoKoira: document.getElementById('isoKoira'),
     pieniKoira: document.getElementById('pieniKoira'),
+    isoKoira: document.getElementById('isoKoira'),
 }
 
 // luodaan nopille tietokannat
@@ -69,7 +70,6 @@ function aloitaPeli() {
     updatePelaaja();
     updateNappulat();
     updateKoirat();
-    updateVaihtokauppa();
     heitaNappi.addEventListener('click', heitäNoppa);
 }
 
@@ -79,28 +79,29 @@ function seuraavaVuoro() {
     heitaNappi.disabled = false;
     oranssiNoppaText.innerText = '';
     sininenNoppaText.innerText = '';
-    tarkistaVoittaja();updateVaihtokauppa();
+    tarkistaVoittaja();
     vuoro = (vuoro + 1) % pelaajat.length;
     suljeVaihto();
     aloitaPeli();
+    vaihdaNappi.disabled = true;
+    vaihdaNappi.removeEventListener('click', vaihda);
 }
 
     
 function määritäPelaajat() {
     const pelaajaLKM = Number(prompt("Syötä pelaajamäärä: "));
     for (let i = 0; i < pelaajaLKM; i++) {
-        let pelaaja = 
-        {
+        let pelaaja = {
             peliNimi: prompt(`Syötä pelaajan ${i+1} pelaajanimi: `),
             nappulat: {
-                puput: 10,
-                lampaat: 10,
-                possut: 10,
-                lehmat: 10,
-                hevoset: 10
+                puput: 1,
+                lampaat: 0,
+                possut: 0,
+                lehmat: 0,
+                hevoset: 0
             },
             koirat: {
-                pienet: 1,
+                pienet: 0,
                 isot: 0
             }
         }
@@ -134,7 +135,7 @@ function heitäNoppa() {
     lisääNappulat();
     updateNappulat();
     updateKoirat();
-    updateVaihtokauppa();
+    updateVaihtoNappi();
     seuraavaNappi.addEventListener('click', seuraavaVuoro);
     seuraavaNappi.disabled = false;
 }
@@ -221,9 +222,9 @@ function updateKoirat() {
     }
 }
 
-function updateVaihtokauppa() {
+function updateVaihtoNappi() {
     // tuoteKuvaElementit.lammasTuote.classList.remove('disabled');
-    if (aktiivinenPelaaja.nappulat.puput >= 6 || aktiivinenPelaaja.nappulat.lampaat > 0 || aktiivinenPelaaja.nappulat.possut > 0 || aktiivinenPelaaja.nappulat.lehmat > 0 || aktiivinenPelaaja.nappulat.hevoset > 0) {
+    if (aktiivinenPelaaja.nappulat.puput >= 6 || aktiivinenPelaaja.nappulat.lampaat > 0 || aktiivinenPelaaja.nappulat.possut > 0 || aktiivinenPelaaja.nappulat.lehmat > 0 || aktiivinenPelaaja.nappulat.hevoset > 0 || aktiivinenPelaaja.koirat.pienet > 0 || aktiivinenPelaaja.koirat.isot > 0) {
         vaihdaNappi.disabled = false;
         vaihdaNappi.addEventListener('click', vaihda);
     } else {
@@ -235,41 +236,35 @@ function updateVaihtokauppa() {
 // poistaa luokan "vaihtokuvake", joka lisää harmaan värityksen. Samalla myös lisää eventlistener ("click", trade)
 function updateVaihtokuvakkeet() {
     // tarkastellaan aluksi nappulat, jotka saadaan vaihtamalla useampi. 
-    let rajat = [6,2,3,2,1,1]
-    let tuotteet = ['puput', 'lampaat', 'possut', 'lehmat', 'lampaat', 'lehmat'];
+    let vaihdettavat = ['puput', 'lampaat', 'possut', 'lehmat', 'lampaat', 'lehmat'];
+    const tuoteFunktiot = [pupuLampaaksi, lammasPossuksi, possuLehmaksi, lehmaHevoseksi, lammasKoiraksi, lehmaKoiraksi]
     let tuoteKuvaLista = Object.keys(tuoteKuvaElementit); 
     let indeksi;
-    for (let nappula in aktiivinenPelaaja.nappulat) {
-        indeksi = Object.keys(aktiivinenPelaaja.nappulat).indexOf(nappula);
-        if (aktiivinenPelaaja.nappulat[nappula] >= rajat[indeksi]) {
-            tuoteKuvaElementit[Object.keys(tuoteKuvaElementit)[indeksi]].classList.remove('disabled');
-            tuoteKuvaElementit[Object.keys(tuoteKuvaElementit)[indeksi]].addEventListener('click', teeVaihtokauppa);
+    for (let indeksi in vaihdettavat) {
+        vaihdettava = vaihdettavat[indeksi];
+        if (aktiivinenPelaaja.nappulat[vaihdettava] >= rajat[indeksi]) {
+            tuoteKuvaElementit[tuoteKuvaLista[indeksi]].classList.remove('disabled');
+            tuoteKuvaElementit[tuoteKuvaLista[indeksi]].addEventListener('click', tuoteFunktiot[indeksi]);
         }  else {
-            tuoteKuvaElementit[Object.keys(tuoteKuvaElementit)[indeksi]].classList.add('disabled');
-            tuoteKuvaElementit[Object.keys(tuoteKuvaElementit)[indeksi]].removeEventListener('click', teeVaihtokauppa);
+            tuoteKuvaElementit[tuoteKuvaLista[indeksi]].classList.add('disabled');
+            tuoteKuvaElementit[tuoteKuvaLista[indeksi]].removeEventListener('click', tuoteFunktiot[indeksi]);
         }
     }
-    for (let nappula in aktiivinenPelaaja.nappulat) {
-        indeksi = Object.keys(aktiivinenPelaaja.nappulat).indexOf(nappula) - 1;
-        console.log("indeksi (vaihdettavaKuvaELementti): " + indeksi);
-        if (indeksi !== -1) {
-            if (aktiivinenPelaaja.nappulat[nappula] > 0) {
-                vaihdettavaKuvaElementit[Object.keys(vaihdettavaKuvaElementit)[indeksi]].classList.remove('disabled');
-                vaihdettavaKuvaElementit[Object.keys(vaihdettavaKuvaElementit)[indeksi]].addEventListener('click', teeVaihtokauppa);
-            } else {
-                vaihdettavaKuvaElementit[Object.keys(vaihdettavaKuvaElementit)[indeksi]].classList.add('disabled');
-                vaihdettavaKuvaElementit[Object.keys(vaihdettavaKuvaElementit)[indeksi]].removeEventListener('click', teeVaihtokauppa);
-            }
-        }
-    }
-}
 
-function teeVaihtokauppa() {
-    indeksi = 2;
-    let rajat = [6,2,3,2,1,1]
-    console.log(aktiivinenPelaaja.nappulat[Object.keys(aktiivinenPelaaja.nappulat)[indeksi]]);
-    aktiivinenPelaaja.nappulat[Object.keys(aktiivinenPelaaja.nappulat)[indeksi]] -= rajat[indeksi];
-    eläinTekstiElementit[Object.keys(eläinTekstiElementit)[indeksi]].textContent = aktiivinenPelaaja.nappulat[Object.keys(aktiivinenPelaaja.nappulat)[indeksi]];
+    // tarkastellaan nappulat, jotka saadaan vaihtamalla yksi
+    let tuotteet = ['lampaat', 'possut', 'lehmat', 'hevoset', 'pienet', 'isot'];
+    let vaihdettavaKuvaLista = Object.keys(vaihdettavaKuvaElementit);
+    const vaihdettavaFunktiot = [lammasPupuksi, possuLampaaksi, lehmaPossuksi, hevonenLehmaksi, koiraLampaaksi, koiraLehmaksi];
+
+    for (let indeksi in tuotteet) {
+        if (aktiivinenPelaaja.nappulat[tuotteet[indeksi]] > 0 || aktiivinenPelaaja.koirat[tuotteet[indeksi]] > 0) {
+            vaihdettavaKuvaElementit[vaihdettavaKuvaLista[indeksi]].classList.remove('disabled');
+            vaihdettavaKuvaElementit[vaihdettavaKuvaLista[indeksi]].addEventListener('click', vaihdettavaFunktiot[indeksi]);
+        } else {
+            vaihdettavaKuvaElementit[vaihdettavaKuvaLista[indeksi]].classList.add('disabled');
+            vaihdettavaKuvaElementit[vaihdettavaKuvaLista[indeksi]].removeEventListener('click', vaihdettavaFunktiot[indeksi]);
+        }
+       }
 }
 
 function vaihda() {
@@ -284,7 +279,6 @@ function vaihda() {
 function suljeVaihto() {
     vaihtoSivu.style.display = 'none';
     document.querySelector('main').style.filter = "none";
-    updateVaihtokauppa();
     vaihdaNappi.textContent = 'Vaihda';
     vaihdaNappi.removeEventListener('click', suljeVaihto);
     vaihdaNappi.addEventListener('click', vaihda);
@@ -295,8 +289,118 @@ function updatePelaaja() {
     pelaajaNimiText.innerText = aktiivinenPelaaja.peliNimi;
 }
 
+// [pupuLampaaksi, lammasPossuksi, possuLehmaksi, lehmaHevoseksi, lammasKoiraksi, lehmaKoiraksi]
+
+function pupuLampaaksi() {
+    if (aktiivinenPelaaja.nappulat.puput >= rajat[0]) {
+        aktiivinenPelaaja.nappulat.puput -= rajat[0];
+        aktiivinenPelaaja.nappulat.lampaat += 1;
+        updateNappulat();
+        updateVaihtokuvakkeet();
+    }
+}
+function lammasPossuksi() {
+    if (aktiivinenPelaaja.nappulat.lampaat >= rajat[1]) {
+        aktiivinenPelaaja.nappulat.lampaat -= rajat[1];
+        aktiivinenPelaaja.nappulat.possut += 1;
+        updateNappulat();
+        updateVaihtokuvakkeet();
+    }
+}
+function possuLehmaksi() {
+    if (aktiivinenPelaaja.nappulat.possut >= rajat[2]) {
+        aktiivinenPelaaja.nappulat.possut -= rajat[2];
+        aktiivinenPelaaja.nappulat.lehmat += 1;
+        updateNappulat();
+        updateVaihtokuvakkeet();
+    }
+}
+function lehmaHevoseksi() {
+    if (aktiivinenPelaaja.nappulat.lehmat >= rajat[3]) {
+        aktiivinenPelaaja.nappulat.lehmat -= rajat[3];
+        aktiivinenPelaaja.nappulat.hevoset += 1;
+        updateNappulat();
+        updateVaihtokuvakkeet();
+    }
+}
+function lammasKoiraksi() {
+    if (aktiivinenPelaaja.nappulat.lampaat >= rajat[4]) {
+        aktiivinenPelaaja.nappulat.lampaat -= rajat[4];
+        aktiivinenPelaaja.koirat.pienet += 1;
+        updateNappulat();
+        updateKoirat();
+        updateVaihtokuvakkeet();
+    }
+}
+function lehmaKoiraksi() {
+    if (aktiivinenPelaaja.nappulat.lehmat >= rajat[5]) {
+        aktiivinenPelaaja.nappulat.lehmat -= rajat[5];
+        aktiivinenPelaaja.koirat.isot += 1;
+        updateNappulat();
+        updateKoirat();
+        updateVaihtokuvakkeet();
+    }
+}
+
+// [lammasPupuksi, possuLampaaksi, lehmaPossuksi, hevonenLehmaksi, koiraLampaaksi, koiraLehmaksi]
+
+function lammasPupuksi() {
+    if (aktiivinenPelaaja.nappulat.lampaat > 0) {
+        aktiivinenPelaaja.nappulat.lampaat -= 1;
+        aktiivinenPelaaja.nappulat.puput += rajat[0];
+        updateNappulat();
+        updateVaihtokuvakkeet();
+    }
+}
+function possuLampaaksi() {
+    if (aktiivinenPelaaja.nappulat.possut > 0) {
+        aktiivinenPelaaja.nappulat.possut -= 1;
+        aktiivinenPelaaja.nappulat.lampaat += rajat[1];
+        updateNappulat();
+        updateVaihtokuvakkeet();
+    }
+}
+function lehmaPossuksi() {
+    if (aktiivinenPelaaja.nappulat.lehmat > 0) {
+        aktiivinenPelaaja.nappulat.lehmat -= 1;
+        aktiivinenPelaaja.nappulat.possut += rajat[2];
+        updateNappulat();
+        updateVaihtokuvakkeet();
+    }
+}
+function hevonenLehmaksi() {
+    if (aktiivinenPelaaja.nappulat.hevoset > 0) {
+        aktiivinenPelaaja.nappulat.hevoset -= 1;
+        aktiivinenPelaaja.nappulat.lehmat += rajat[3];
+        updateNappulat();
+        updateVaihtokuvakkeet();
+    }
+}
+function koiraLampaaksi() {
+    if (aktiivinenPelaaja.koirat.pienet > 0) {
+        aktiivinenPelaaja.koirat.pienet -= 1;
+        aktiivinenPelaaja.nappulat.lampaat += rajat[4];
+        updateNappulat();
+        updateKoirat();
+        updateVaihtokuvakkeet();
+    }
+}
+function koiraLehmaksi() {
+    if (aktiivinenPelaaja.koirat.isot > 0) {
+        aktiivinenPelaaja.koirat.isot -= 1;
+        aktiivinenPelaaja.nappulat.lehmat += rajat[5];
+        updateNappulat();
+        updateKoirat();
+        updateVaihtokuvakkeet();
+    }
+}
+
+
 function gameOver() {
-    window.postMessage(aktiivinenPelaaja.peliNimi + "on voittanut pelin!");
+    console.log(aktiivinenPelaaja.peliNimi + " on voittanut pelin!");
+    window.alert(aktiivinenPelaaja.peliNimi + " on voittanut pelin!");
+    määritäPelaajat();
+    aloitaPeli();
 }
 
 // tarkistaa voittajan 

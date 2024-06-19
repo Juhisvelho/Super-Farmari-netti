@@ -71,6 +71,10 @@ body{
     filter: grayscale(80%);
 }
 
+#vaihtokauppaContainer > .elainrivi > img:not(.disabled):hover {
+    scale: 1.05;
+}
+
 button {
     display: inline-block;
     text-align: center;

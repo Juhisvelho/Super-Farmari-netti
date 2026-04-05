@@ -89,6 +89,10 @@ function seuraavaVuoro() {
 
     
 function määritäPelaajat() {
+    // tyhjennetään aluksi pelaajalista
+    while (pelaajat.length > 0) {
+        pelaajat.pop();
+    }
     const pelaajaLKM = Number(prompt("Syötä pelaajamäärä: "));
     for (let i = 0; i < pelaajaLKM; i++) {
         let pelaaja = {
